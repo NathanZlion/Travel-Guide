@@ -6,13 +6,10 @@ import cors from "cors"
 dotenv.config();
 
 // all routers
-import packageRouter from "./routes/packageRouter.js";
 import hotelRouter from "./routes/hotelRouter.js";
-import userRouter from "./routes/userRouter.js";
-import commentRouter from "./routes/commentRouter.js";
-import bookingRouter from "./routes/bookingRouter.js";
-import roomRouter from "./routes/roomRouter.js";
-import wishlistRouter from "./routes/wishlistRouter.js";
+import destinationRouter from "./routes/destinationsRouter.js";
+import restaurantRouter from "./routes/restaurantRouter.js";
+
 
 const app = express();
 
@@ -32,16 +29,9 @@ app.use((req, res, next) => {
 
 
 // use routers
-app.use("/api/package", packageRouter);
-app.use("/api/comment", commentRouter);
-app.use("/api/user", userRouter);
-app.use("/api/wishlist", wishlistRouter);
 app.use("/api/hotel", hotelRouter);
-app.use("/api/room", roomRouter);
-app.use("/api/booking", bookingRouter);
-
-// username : touretdb
-// passowrd: admin
+app.use("/api/destination", destinationRouter);
+app.use("/api/restaurant", restaurantRouter);
 
 mongoose.set('strictQuery', false);
 
