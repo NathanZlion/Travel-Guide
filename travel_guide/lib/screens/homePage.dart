@@ -43,10 +43,18 @@ class HomePage extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    SizedBox(
-                        height: 400,
-                        child: Image.asset(
-                            "assets/images/Skateboard Astonaut Sticker.jfif")),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(
+                          10.0), // Adjust the value as per your requirement
+                      child: Image.asset(
+                        'assets/images/Skateboard Astonaut Sticker.jfif', // Replace with your image URL
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    // SizedBox(
+                    //     height: 400,
+                    //     child: Image.asset(
+                    //         "assets/images/Skateboard Astonaut Sticker.jfif")),
                     Container(height: 30),
                     SizedBox(
                       height: 500,

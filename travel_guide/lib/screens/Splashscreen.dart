@@ -9,7 +9,7 @@ class SplashScreen extends StatelessWidget {
     // a screen with the logo at the middle that waits for 3 seconds and route to the main screen
 
     // show this page for 3 seconds then route to the main page
-    Future.delayed(const Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 3), () {
       context.go('/home');
     });
 
@@ -18,11 +18,16 @@ class SplashScreen extends StatelessWidget {
         body: Center(
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.5,
-            child:
-                Image.asset('assets/images/Skateboard Astonaut Sticker.jfif'),
-          ),
-        ),
-      ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(
+                  40.0), // Adjust the value as per your requirement
+              child: Image.asset(
+                  'assets/images/Skateboard Astonaut Sticker.jfif', // Replace with your image URL
+                  fit: BoxFit.cover)
+            ),
+          )
+        )
+      )
     );
   }
 }

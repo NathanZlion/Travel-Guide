@@ -9,3 +9,5 @@ class DestinationDetailPage extends StatelessWidget {
     return Container();
   }
 }
+
+
