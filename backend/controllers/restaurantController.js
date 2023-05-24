@@ -13,7 +13,8 @@ export const getRestaurants = async (req, res) => {
             query.location = req.query.location;
         }
 
-        let restaurants = Destination.find(query);
+        // find restaurants with the name and location specified 
+        let restaurants = await Restaurant.find(query);
 
         if (!restaurants) {
             return res.status(404).json({ msg: "no packages for today!", data: [] });
@@ -41,3 +42,11 @@ export const getRestaurant = async (req, res) => {
     }
 }
 
+export const addHotel = async (req, res) => {
+    try {
+        const hotel = await Hotel.create(req.body)
+        res.status(200).json({ success: true, data: hotel })
+    } catch (error) {
+        res.status(500).json({ msg: error.message })
+    }
+};

@@ -3,7 +3,7 @@
 import express from "express";
 
 // import controllers
-import { getAllDestinations, getDestination} from "../controllers/destinationController.js";
+import { getAllDestinations, getDestination, addDestination} from "../controllers/destinationController.js";
 
 const destinationRouter = express.Router();
 
@@ -12,6 +12,9 @@ destinationRouter.get("/", getAllDestinations);
 
 // handles getting a specific destination by id
 destinationRouter.get("/:id", getDestination);
+
+// add destination
+destinationRouter.post("/", addDestination);
 
 
 export default destinationRouter;
