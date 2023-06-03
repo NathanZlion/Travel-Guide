@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:travel_guide/screens/Splashscreen.dart';
-import 'package:travel_guide/screens/destinations.dart';
+import 'package:travel_guide/destination/screens/destinations.dart';
 import 'package:travel_guide/screens/homePage.dart';
-import 'package:travel_guide/screens/hotels.dart';
-import 'package:travel_guide/screens/restaurants.dart';
+import 'package:travel_guide/hotel/screens/hotels.dart';
+import 'package:travel_guide/restaurant/screens/restaurants.dart';
 
-void main() {
+import 'destination/bloc/destination_bloc.dart';
+
+Future<void> main() async {
+  await dotenv.load(fileName: ".env");
   runApp(MyApp());
 }
 
@@ -57,7 +62,7 @@ class MyApp extends StatelessWidget {
       ),
       GoRoute(
         path: '/hotels',
-        builder: (context, state) => const HotelsPage(),
+        builder: (context, state) => const HotelPage(),
       ),
       GoRoute(
         path: '/hotel/details',
@@ -93,9 +98,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerDelegate: _router.routerDelegate,
-      routeInformationParser: _router.routeInformationParser,
-    );
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => DestinationBloc()),
+          BlocProvider(create: (context) => RestaurantBloc()),
+          BlocProvider(create: (context) => HotelBloc()),
+        ],
+        child: MaterialApp.router(
+          title: 'Travel Guide',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          routerDelegate: _router.routerDelegate,
+          routeInformationParser: _router.routeInformationParser,
+        ));
   }
 }

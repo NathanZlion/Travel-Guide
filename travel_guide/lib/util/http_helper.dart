@@ -1,8 +1,8 @@
 import 'package:http/http.dart' show get, post, put, delete;
 import 'dart:convert';
-import 'package:travel_guide/Model/destination.model.dart';
-import 'package:travel_guide/Model/hotel.model.dart';
-import 'package:travel_guide/Model/restaurant.model.dart';
+import 'package:travel_guide/destination/model/destination_model.dart';
+import 'package:travel_guide/hotel/model/hotel.model.dart';
+import 'package:travel_guide/restaurant/model/restaurant.model.dart';
 
 class HttpHelper {
   // free api from https://rapidapi.com/apidojo/api/travel-advisor

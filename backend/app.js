@@ -23,7 +23,6 @@ app.use((req, res, next) => {
         "Authorization, Origin, X-Requested-With, Content-Type, Accept");
     res.setHeader("Access-Control-Allow-Methods",
         "GET, POST, PATCH, DELETE, OPTIONS");
-    // res.setHeader("Access-Control-Allow-Headers", "Authorization, Origin, X-Requested-With, Content-Type, Accept");
     next();
 })
 

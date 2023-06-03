@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../Model/hotel.model.dart';
+import '../model/hotel.model.dart';
 
 class HotelPage extends StatefulWidget {
   const HotelPage({super.key});

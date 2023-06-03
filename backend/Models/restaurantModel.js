@@ -24,10 +24,6 @@ const restaurantSchema = new Schema({
         type: Number,
         default: 0,
     },
-    things_to_do: {
-        type: [String],
-        required: true,
-    },
     map: {
         type: String,
     }

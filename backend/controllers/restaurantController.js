@@ -6,18 +6,18 @@ export const getRestaurants = async (req, res) => {
     try {
         let query = {};
 
-        if (req.query.search) {
-            query.name = req.query.search;
+        if (req.query.name) {
+            query.name = { $regex: req.query.name, $options: 'i' };
         }
         if (req.query.location) {
-            query.location = req.query.location;
+            query.location = { $regex: req.query.location, $options: 'i' };
         }
 
         // find restaurants with the name and location specified 
         let restaurants = await Restaurant.find(query);
 
-        if (!restaurants) {
-            return res.status(404).json({ msg: "no packages for today!", data: [] });
+        if (restaurants.length == 0) {
+            return res.status(404).json({ msg: "No such Restaurant found!", data: [] });
         }
 
         return res.status(200).json({ data: restaurants });

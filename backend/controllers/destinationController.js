@@ -7,8 +7,8 @@ export const getAllDestinations = async (req, res) => {
     try {
         let query = {};
 
-        if (req.query.search) {
-            query.name = req.query.search;
+        if (req.query.name) {
+            query.name = { $regex: req.query.name, $options: 'i' };
         }
         if (req.query.location) {
             query.location = { $regex: req.query.location, $options: 'i' };
@@ -16,10 +16,9 @@ export const getAllDestinations = async (req, res) => {
 
         // find related destinations based on the query, don't have to have the same name but related
         let destinations = await Destination.find(query);
-
-        if (!destinations) {
-            return res.status(404).json({ msg: "no packages for today!", data: [] });
-        }
+        
+        // if no destination matches found by that filter
+        if (destinations.length == 0) return res.status(404).json({ msg: "No such destinations found!", data: [] });
 
         return res.status(200).json({ data: destinations });
 
