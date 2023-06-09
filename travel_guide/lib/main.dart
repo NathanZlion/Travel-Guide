@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
-import 'package:travel_guide/screens/Splashscreen.dart';
-import 'package:travel_guide/destination/screens/destinations.dart';
-import 'package:travel_guide/screens/homePage.dart';
-import 'package:travel_guide/hotel/screens/hotels.dart';
-import 'package:travel_guide/restaurant/screens/restaurants.dart';
-
-import 'destination/bloc/destination_bloc.dart';
+import './Presentation/screens_barrel.dart';
+import 'application/destination/destination.dart';
+import 'application/hotel/hotel.dart';
+import 'application/restaurant/restaurant.dart';
 
 Future<void> main() async {
-  await dotenv.load(fileName: ".env");
   runApp(MyApp());
 }
 
@@ -19,22 +14,6 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   final _router = GoRouter(
-    /**
-
-    A list of possible routes in our application.
-          `/entry`               => point shows splash screen
-          `/home`                => shows home page
-          `/destinations`        => shows destinations page
-          `/destination/details` => shows destination details page
-          `/restaurants`         => shows restaurants page
-          `/restaurant/details   => shows restaurant details page
-          `/hotels`              => shows hotels page
-          `/hotel/details`       => shows hotel details page
-          `/profile`             => profile page
-          `/cart`                => shows cart page this is where the user can store all the places he wants to visit
-          `/settings`            => to show settings
-     */
-
     routes: [
       GoRoute(
         path: '/',
@@ -46,49 +25,38 @@ class MyApp extends StatelessWidget {
       ),
       GoRoute(
         path: '/destinations',
-        builder: (context, state) => const DestinationsPage(),
+        builder: (context, state) => const DestinationsListPage(),
       ),
       GoRoute(
-        path: '/destination/details',
-        builder: (context, state) => const HomePage(),
+        path: '/destination/:id',
+        builder: (context, state) => DestinationDetailPage(
+          state.params['id']!,
+        ),
       ),
       GoRoute(
         path: '/restaurants',
-        builder: (context, state) => const RestaurantsPage(),
+        builder: (context, state) => const RestaurantsListPage(),
       ),
       GoRoute(
-        path: '/restaurant/details',
-        builder: (context, state) => const HomePage(),
+        path: '/restaurant/:id',
+        builder: (context, state) => RestaurantDetailPage(
+          state.params['id']!,
+        ),
       ),
       GoRoute(
         path: '/hotels',
-        builder: (context, state) => const HotelPage(),
+        builder: (context, state) => const HotelsListPage(),
       ),
       GoRoute(
-        path: '/hotel/details',
-        builder: (context, state) => const HomePage(),
+        path: '/hotel/:id',
+        builder: (context, state) => HotelDetailPage(
+          state.params['id']!,
+        ),
       ),
-      // destination search
-      GoRoute(
-        path: '/destination/search',
-        builder: (context, state) => const HomePage(),
-      ),
-      // restaurant search
-      GoRoute(
-        path: '/restaurant/search',
-        builder: (context, state) => const HomePage(),
-      ),
-      // hotel search
-      GoRoute(
-        path: '/hotel/search',
-        builder: (context, state) => const HomePage(),
-      ),
-      // profile
       GoRoute(
         path: '/About',
         builder: (context, state) => const HomePage(),
       ),
-      // planning the trip using the cart
       GoRoute(
         path: '/cart',
         builder: (context, state) => const HomePage(),
@@ -105,6 +73,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => HotelBloc()),
         ],
         child: MaterialApp.router(
+          debugShowCheckedModeBanner: false,
           title: 'Travel Guide',
           theme: ThemeData(
             primarySwatch: Colors.blue,

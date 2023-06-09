@@ -17,7 +17,7 @@ export const getRestaurants = async (req, res) => {
         let restaurants = await Restaurant.find(query);
 
         if (restaurants.length == 0) {
-            return res.status(404).json({ msg: "No such Restaurant found!", data: [] });
+            return res.status(200).json({ msg: "No such Restaurant found!", data: [] });
         }
 
         return res.status(200).json({ data: restaurants });
@@ -34,7 +34,7 @@ export const getRestaurant = async (req, res) => {
     try {
         const rest = await Restaurant.findById(restaurant_id);
         if (!rest) {
-            return res.status(404).json({ msg: "Sorry this restaurant no longer exists.", data: null });
+            return res.status(200).json({ msg: "Sorry this restaurant no longer exists.", data: null });
         }
         return res.status(200).json({ data: rest });
     } catch (error) {
@@ -42,10 +42,10 @@ export const getRestaurant = async (req, res) => {
     }
 }
 
-export const addHotel = async (req, res) => {
+export const addRestaurant = async (req, res) => {
     try {
-        const hotel = await Hotel.create(req.body)
-        res.status(200).json({ success: true, data: hotel })
+        const restaurant = await Restaurant.create(req.body)
+        res.status(200).json({ success: true, data: restaurant })
     } catch (error) {
         res.status(500).json({ msg: error.message })
     }

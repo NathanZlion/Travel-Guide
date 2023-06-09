@@ -18,7 +18,7 @@ export const getAllDestinations = async (req, res) => {
         let destinations = await Destination.find(query);
         
         // if no destination matches found by that filter
-        if (destinations.length == 0) return res.status(404).json({ msg: "No such destinations found!", data: [] });
+        if (destinations.length == 0) return res.status(200).json({ msg: "No such destinations found!", data: [] });
 
         return res.status(200).json({ data: destinations });
 
@@ -30,11 +30,11 @@ export const getAllDestinations = async (req, res) => {
 
 export const getDestination = async (req, res) => {
 
-    const destination_id = req.params.id
+    const destination_id = req.params.id;
     try {
-        const dest = await Package.findById(destination_id);
+        const dest = await Destination.findById(destination_id);
         if (!dest) {
-            return res.status(404).json({ msg: "no such destination exists sorry", data: null });
+            return res.status(200).json({ msg: "no such destination exists sorry", data: null });
         }
         return res.status(200).json({ data: dest });
     } catch (error) {
