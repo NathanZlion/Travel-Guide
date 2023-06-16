@@ -15,7 +15,7 @@ class DestinationInitial extends DestinationState {}
 class DestinationListLoading extends DestinationState {}
 
 class DestinationListLoaded extends DestinationState {
-  final destinations;
+  final List<Destination> destinations;
 
   const DestinationListLoaded(this.destinations);
 

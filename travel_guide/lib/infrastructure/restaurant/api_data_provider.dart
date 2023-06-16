@@ -3,11 +3,11 @@ import 'package:http/http.dart' as http;
 import '../../application/restaurant/restaurant.dart';
 
 class ApiDataProvider {
-  final String BASE_URL = "http://localhost:5000/api";
+  final String baseUrl = "http://localhost:5000/api";
 
   Future<List<Restaurant>> getRestaurants(name, location) async {
     final response = await http
-        .get(Uri.parse("$BASE_URL/restaurant?name=$name&location=$location"));
+        .get(Uri.parse("$baseUrl/restaurant?name=$name&location=$location"));
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       final json = jsonDecode(response.body)["data"];
@@ -18,7 +18,6 @@ class ApiDataProvider {
       for (var item in json) {
         restaurants.add(Restaurant.fromJson(item));
       }
-      print(json);
 
       return restaurants;
     } else {
@@ -27,7 +26,7 @@ class ApiDataProvider {
   }
 
   Future<Restaurant> getRestaurant(String id) async {
-    final response = await http.get(Uri.parse("$BASE_URL/restaurant/$id"));
+    final response = await http.get(Uri.parse("$baseUrl/restaurant/$id"));
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       final json = jsonDecode(response.body)["data"];

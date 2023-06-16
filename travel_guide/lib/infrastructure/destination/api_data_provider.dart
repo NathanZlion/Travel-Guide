@@ -4,11 +4,11 @@ import '../../application/destination/model/destination_model.dart';
 import 'package:http/http.dart' as http;
 
 class ApiDataProvider {
-  final String BASE_URL = "http://localhost:5000/api";
+  final String baseUrl = "http://localhost:5000/api";
 
   Future<List<Destination>> getDestinations(name, location) async {
     final response = await http
-        .get(Uri.parse("$BASE_URL/destination?name=$name&location=$location"));
+        .get(Uri.parse("$baseUrl/destination?name=$name&location=$location"));
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       final json = jsonDecode(response.body)["data"];
@@ -27,7 +27,7 @@ class ApiDataProvider {
   }
 
   Future<Destination> getDestination(String id) async {
-    final response = await http.get(Uri.parse("$BASE_URL/destination/$id"));
+    final response = await http.get(Uri.parse("$baseUrl/destination/$id"));
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       final json = jsonDecode(response.body)["data"];

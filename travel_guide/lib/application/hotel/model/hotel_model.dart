@@ -39,4 +39,20 @@ class Hotel {
       'image': image,
     };
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'location': location,
+      'description': description,
+      'image': image,
+    };
+  }
+
+
+  @override
+  String toString() {
+    return 'Hotel{id: $id, name: $name, location: $location, description: $description, image: $image}';
+  }
 }

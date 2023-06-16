@@ -5,8 +5,10 @@ import './Presentation/screens_barrel.dart';
 import 'application/destination/destination.dart';
 import 'application/hotel/hotel.dart';
 import 'application/restaurant/restaurant.dart';
+import 'local_storage.dart';
 
 Future<void> main() async {
+  SQLHelper.openDatabase();
   runApp(MyApp());
 }
 
@@ -67,6 +69,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
+        // bloc providers for the app.
         providers: [
           BlocProvider(create: (context) => DestinationBloc()),
           BlocProvider(create: (context) => RestaurantBloc()),

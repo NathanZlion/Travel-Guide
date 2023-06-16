@@ -38,4 +38,17 @@ class Restaurant {
       'map': map,
     };
   }
+
+  // to map
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'location': location,
+      'description': description,
+      'images': images,
+      'rating': rating,
+      'map': map,
+    };
+  }
 }

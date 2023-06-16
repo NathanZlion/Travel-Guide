@@ -1,6 +1,3 @@
-
-
-
 /*
 
 // sample destination data from backend
@@ -23,7 +20,6 @@
 */
 
 class Destination {
-
   late String id;
   late String name;
   late String location;
@@ -68,7 +64,19 @@ class Destination {
     };
   }
 
-  // printing it
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'location': location,
+      'description': description,
+      'image': image,
+      'rating': rating,
+      'things_to_do': thingsToDo,
+      'map': map,
+    };
+  }
+
   @override
   String toString() {
     return 'Destination{id: $id, name: $name, location: $location, description: $description, image: $image, rating: $rating, thingsToDo: $thingsToDo, map: $map}';
