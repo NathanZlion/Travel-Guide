@@ -7,6 +7,7 @@ dotenv.config();
 import hotelRouter from "./routes/hotelRouter.js";
 import destinationRouter from "./routes/destinationsRouter.js";
 import restaurantRouter from "./routes/restaurantRouter.js";
+import cartRouter from "./routes/cartRouter.js";
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use((req, res, next) => {
 app.use("/api/hotel", hotelRouter);
 app.use("/api/destination", destinationRouter);
 app.use("/api/restaurant", restaurantRouter);
+app.use("/api/cart", cartRouter);
 
 mongoose.set("strictQuery", false);
 
