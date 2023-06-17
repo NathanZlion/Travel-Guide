@@ -15,9 +15,9 @@ Future<void> main() async {
   try {
     await SQLHelper.openDatabase();
   } catch (e) {
-    print("----------------------------");
+    print("---------------- can't initialize the database ------------");
     print(e.toString());
-    print("----------------------------");
+    print("---------------- can't initialize the database ------------");
   }
   runApp(MyApp());
 }
