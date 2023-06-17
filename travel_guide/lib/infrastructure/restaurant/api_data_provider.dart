@@ -1,10 +1,10 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import '../../application/restaurant/restaurant.dart';
 
 class ApiDataProvider {
-final String baseUrl = "http://10.0.2.2:5000/api";
-
+  final String baseUrl = dotenv.env['BASE_URL']!;
   Future<List<Restaurant>> getRestaurants(name, location) async {
     final response = await http
         .get(Uri.parse("$baseUrl/restaurant?name=$name&location=$location"));

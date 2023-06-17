@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 import '../../application/destination/model/destination_model.dart';
 import 'package:http/http.dart' as http;
 
 class ApiDataProvider {
-final String baseUrl = "http://10.0.2.2:5000/api";
+final String baseUrl = dotenv.env['BASE_URL']!;
 
   Future<List<Destination>> getDestinations(name, location) async {
     final response = await http

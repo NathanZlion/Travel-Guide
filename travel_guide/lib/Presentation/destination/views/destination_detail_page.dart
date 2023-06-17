@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:travel_guide/infrastructure/cart/api_provider.dart';
 
+import '../../../application/cart/cart.dart';
 import '../../../application/destination/destination.dart';
 import '../../screens_barrel.dart';
 
@@ -38,7 +40,7 @@ class DestinationDetailPage extends StatelessWidget {
                 ),
                 body: const LoadingScreen(),
               );
-            } 
+            }
             // loaded successfully
             else if (state is DestinationDetailLoaded) {
               final Destination destination = state.destination;
@@ -47,9 +49,9 @@ class DestinationDetailPage extends StatelessWidget {
                   title: const Text('Destination Detail'),
                 ),
                 body: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
                       Image.network(
                         destination.image,
                         fit: BoxFit.cover,
@@ -111,48 +113,87 @@ class DestinationDetailPage extends StatelessWidget {
                           );
                         }).toList(),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            // TODO: Implement add to cart functionality
-                            // In fact, check if already in cart and conditionally have a remove from cart button
-
-                            
+                      ElevatedButton(
+                        onPressed: () async {
+                          final cartBloc = BlocProvider.of<CartBloc>(context);
+                          bool itemInCart =
+                              await CartCache.checkItemInCart(destination);
+                          if (itemInCart) {
+                            cartBloc.add(CartRemove(item: destination));
+                            // ignore: use_build_context_synchronously
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Removed item from cart'),
+                                duration: Duration(seconds: 1),
+                              ),
+                            );
+                          } else {
+                            cartBloc.add(CartAdd(item: destination));
+                            // ignore: use_build_context_synchronously
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Item added to cart'),
+                                duration: Duration(seconds: 1),
+                              ),
+                            );
+                          }
+                        },
+                        child: BlocBuilder<CartBloc, CartState>(
+                          builder: (context, state) {
+                            if (state is CartInitial) {
+                              final cartBloc =
+                                  BlocProvider.of<CartBloc>(context);
+                              cartBloc.add(CartLoad());
+                              return const Text('Add to cart',style: TextStyle(fontSize: 16.0, color: Colors.blue));
+                            }
+                            if (state is CartLoading) {
+                              return const CircularProgressIndicator();
+                            } else if (state is CartLoaded) {
+                              bool itemInCart = state.cart.destinations
+                                  .any((item) => item.id == destination.id);
+                              if (itemInCart) {
+                                return const Text('Remove item from cart',
+                                    style: TextStyle(
+                                        fontSize: 16.0,
+                                        backgroundColor: Colors.red,
+                                        color: Colors.white));
+                              } else {
+                                return const Text('Add item to cart',
+                                    style: TextStyle(
+                                        fontSize: 16.0,
+                                        backgroundColor: Colors.blue,
+                                        color: Colors.white));
+                              }
+                            } else if (state is CartError) {
+                              return Text(state.message);
+                            } else {
+                              return const Text("Unexpected error");
+                            }
                           },
-                          child: const Text('Add to Cart'),
                         ),
                       ),
-                    ],
-                  ),
-                ),
+                    ])),
               );
             } else if (state is DestinationDetailError) {
               return Scaffold(
-                appBar: AppBar(
-                  title: const Text('Destination Detail'),
-                ),
-                body: Center(
-                  // Display an error message with a reload button
-                  child: TextButton(
-                    onPressed: () {
-                      BlocProvider.of<DestinationBloc>(context)
-                          .add(DestinationDetailLoadEvent(destinationId));
-                    },
-                    child: const Text("Reload"),
+                  appBar: AppBar(
+                    title: const Text('Destination Detail'),
                   ),
-                ),
-              );
+                  body: Center(
+                      // Display an error message with a reload button
+                      child: TextButton(
+                          onPressed: () {
+                            BlocProvider.of<DestinationBloc>(context)
+                                .add(DestinationDetailLoadEvent(destinationId));
+                          },
+                          child: const Text("Reload"))));
             } else {
               // Add the load destination detail event to the bloc
               BlocProvider.of<DestinationBloc>(context)
                   .add(DestinationDetailLoadEvent(destinationId));
               return Scaffold(
-                appBar: AppBar(
-                  title: const Text('Destination Detail'),
-                ),
-                body: const LoadingScreen(),
-              );
+                  appBar: AppBar(title: const Text('Destination Detail')),
+                  body: const LoadingScreen());
             }
           },
         ),

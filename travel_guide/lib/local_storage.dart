@@ -1,4 +1,3 @@
-import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' as sqflite_ffi;
 import 'package:path/path.dart' as path;
 import 'package:sqflite/sqflite.dart';

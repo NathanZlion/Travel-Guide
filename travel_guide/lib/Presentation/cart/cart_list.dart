@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:travel_guide/application/hotel/hotel.dart';
 import 'package:travel_guide/application/restaurant/model/restaurant_model.dart';
 
@@ -42,14 +43,18 @@ class CartList extends StatelessWidget {
               }
 
               if (state is CartLoaded) {
-                return Column(
-                  children: [
-                    RestaurantsInCartListView(restaurants: state.cart.restaurants),
-                    const SizedBox(width: 8),
-                    HotelsInCartListView(hotels: state.cart.hotels),
-                    const SizedBox(width: 8),
-                    DestinationsInCartListView(destinations: state.cart.destinations),
-                  ],
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      RestaurantsInCartListView(
+                          restaurants: state.cart.restaurants),
+                      const SizedBox(height: 8),
+                      HotelsInCartListView(hotels: state.cart.hotels),
+                      const SizedBox(height: 8),
+                      DestinationsInCartListView(
+                          destinations: state.cart.destinations),
+                    ],
+                  ),
                 );
               }
 
@@ -73,37 +78,46 @@ class DestinationsInCartListView extends StatelessWidget {
         const Text('Destinations', style: TextStyle(fontSize: 18)),
         const SizedBox(height: 8),
         Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.grey[200],
-          ),
-          child: ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: destinations.length,
-            itemBuilder: (context, index) {
-              final item = destinations[index];
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.grey[200],
+            ),
+            child: destinations.isNotEmpty
+                ? ListView.builder(
+                    shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: destinations.length,
+                    itemBuilder: (context, index) {
+                      final item = destinations[index];
 
-              return Row(
-                children: [
-                  Expanded(child: DestinationCard(destination: item)),
-                  IconButton(
-                    onPressed: () {
-                      context.read<CartBloc>().add(CartRemove(item: item));
+                      return Row(
+                        children: [
+                          Expanded(child: DestinationCard(destination: item)),
+                          IconButton(
+                            onPressed: () {
+                              context
+                                  .read<CartBloc>()
+                                  .add(CartRemove(item: item));
+                            },
+                            icon: const Icon(Icons.remove_circle),
+                          ),
+                        ],
+                      );
                     },
-                    icon: const Icon(Icons.remove_circle),
-                  ),
-                ],
-              );
-            },
-          ),
-        ),
+                  )
+                : Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        GoRouter.of(context).push('/destinations');
+                      },
+                      child:
+                          const Text('No Destinations in Cart, Explore some!'),
+                    ),
+                  )),
       ],
     );
   }
 }
-
-
 
 class RestaurantsInCartListView extends StatelessWidget {
   final List<Restaurant> restaurants;
@@ -116,31 +130,42 @@ class RestaurantsInCartListView extends StatelessWidget {
         const Text('Restaurants', style: TextStyle(fontSize: 18)),
         const SizedBox(height: 8),
         Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.grey[200],
-          ),
-          child: ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: restaurants.length,
-            itemBuilder: (context, index) {
-              final item = restaurants[index];
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.grey[200],
+            ),
+            child: restaurants.isNotEmpty
+                ? ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: restaurants.length,
+                    itemBuilder: (context, index) {
+                      final item = restaurants[index];
 
-              return Row(
-                children: [
-                  Expanded(child: RestaurantCard(restaurant: item)),
-                  IconButton(
-                    onPressed: () {
-                      context.read<CartBloc>().add(CartRemove(item: item));
+                      return Row(
+                        children: [
+                          Expanded(child: RestaurantCard(restaurant: item)),
+                          IconButton(
+                            onPressed: () {
+                              context
+                                  .read<CartBloc>()
+                                  .add(CartRemove(item: item));
+                            },
+                            icon: const Icon(Icons.remove_circle),
+                          ),
+                        ],
+                      );
                     },
-                    icon: const Icon(Icons.remove_circle),
-                  ),
-                ],
-              );
-            },
-          ),
-        ),
+                  )
+                : Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        GoRouter.of(context).push('/restaurants');
+                      },
+                      child:
+                          const Text('No Restaurants in Cart, Explore some!'),
+                    ),
+                  )),
       ],
     );
   }
@@ -157,31 +182,41 @@ class HotelsInCartListView extends StatelessWidget {
         const Text('Hotel', style: TextStyle(fontSize: 18)),
         const SizedBox(height: 8),
         Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.grey[200],
-          ),
-          child: ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: hotels.length,
-            itemBuilder: (context, index) {
-              final item = hotels[index];
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.grey[200],
+            ),
+            child: hotels.isNotEmpty
+                ? ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: hotels.length,
+                    itemBuilder: (context, index) {
+                      final item = hotels[index];
 
-              return Row(
-                children: [
-                  Expanded(child: HotelCard(hotel: item)),
-                  IconButton(
-                    onPressed: () {
-                      context.read<CartBloc>().add(CartRemove(item: item));
+                      return Row(
+                        children: [
+                          Expanded(child: HotelCard(hotel: item)),
+                          IconButton(
+                            onPressed: () {
+                              context
+                                  .read<CartBloc>()
+                                  .add(CartRemove(item: item));
+                            },
+                            icon: const Icon(Icons.remove_circle),
+                          ),
+                        ],
+                      );
                     },
-                    icon: const Icon(Icons.remove_circle),
-                  ),
-                ],
-              );
-            },
-          ),
-        ),
+                  )
+                : Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        GoRouter.of(context).push('/hotels');
+                      },
+                      child: const Text('No Hotels in Cart, Explore some!'),
+                    ),
+                  )),
       ],
     );
   }

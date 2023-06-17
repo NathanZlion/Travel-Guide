@@ -7,18 +7,14 @@ import 'application/cart/cart.dart';
 import 'application/destination/destination.dart';
 import 'application/hotel/hotel.dart';
 import 'application/restaurant/restaurant.dart';
-import 'local_storage.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+// import 'local_storage.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Initialize Flutter binding
 
-  try {
-    await SQLHelper.openDatabase();
-  } catch (e) {
-    print("---------------- can't initialize the database ------------");
-    print(e.toString());
-    print("---------------- can't initialize the database ------------");
-  }
+  await dotenv.load();
   runApp(MyApp());
 }
 

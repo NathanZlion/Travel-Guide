@@ -12,10 +12,22 @@ class Cart {
       required this.restaurants,
       required this.destinations});
 
-  Cart.fromJson(Map<String, dynamic> json) {
-    hotels = json['hotels'];
-    restaurants = json['restaurants'];
-    destinations = json['destinations'];
+  Cart.fromJson(json) {
+    hotels = [];
+    restaurants = [];
+    destinations = [];
+
+    for (var hotel in json['hotels']) {
+      hotels.add(Hotel.fromJson(hotel));
+    }
+
+    for (var restaurant in json['restaurants']) {
+      restaurants.add(Restaurant.fromJson(restaurant));
+    }
+
+    for (var destination in json['destinations']) {
+      destinations.add(Destination.fromJson(destination));
+    }
   }
 
   Map<String, dynamic> toJson() {

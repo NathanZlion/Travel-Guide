@@ -18,9 +18,3 @@ class CartError extends CartState {
 
   CartError({required this.message});
 }
-
-class CartChecked extends CartState {
-  final bool isInCart;
-
-  CartChecked({required this.isInCart});
-}

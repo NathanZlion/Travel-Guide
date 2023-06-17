@@ -1,26 +1,20 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../local_storage.dart';
+import 'package:travel_guide/infrastructure/cart/api_provider.dart';
 
+import '../../destination/model/destination_model.dart';
+import '../../hotel/model/hotel_model.dart';
+import '../../restaurant/model/restaurant_model.dart';
 import '../cart.dart';
 
 class CartBloc extends Bloc<CartEvent, CartState> {
   CartBloc() : super(CartInitial()) {
+    CartCache cache = CartCache();
+
     on<CartLoad>((event, emit) async {
       emit(CartLoading());
       try {
-        final db = await SQLHelper.openDatabase();
-        Cart cart = await getCart(db);
+        Cart cart = await cache.getCart();
         emit(CartLoaded(cart: cart));
-      } catch (e) {
-        emit(CartError(message: e.toString()));
-      }
-    });
-
-    on<CartCheck>((event, emit) async {
-      try {
-        final db = await SQLHelper.openDatabase();
-        final bool isInCart = await SQLHelper.isInCart(db, event.item);
-        emit(CartChecked(isInCart: isInCart));
       } catch (e) {
         emit(CartError(message: e.toString()));
       }
@@ -29,10 +23,20 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<CartAdd>((event, emit) async {
       emit(CartLoading());
       try {
-        final db = await SQLHelper.openDatabase();
-        await SQLHelper.addItem(db, event.item);
-        Cart cart = await getCart(db);
-        emit(CartLoaded(cart: cart));
+        Cart cart;
+        if (event.item is Hotel) {
+          Hotel item = event.item as Hotel;
+          cart = await cache.addHotel(item.id);
+        } else if (event.item is Restaurant) {
+          Restaurant item = event.item as Restaurant;
+          cart = await cache.addRestaurant(item.id);
+        } else {
+          Destination item = event.item as Destination;
+          cart = await cache.addDestination(item.id);
+        }
+
+        Cart cartNew = await cache.getCart();
+        emit(CartLoaded(cart: cartNew));
       } catch (e) {
         emit(CartError(message: e.toString()));
       }
@@ -41,21 +45,23 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<CartRemove>((event, emit) async {
       emit(CartLoading());
       try {
-        final db = await SQLHelper.openDatabase();
-        await SQLHelper.removeItem(db, event.item);
-        Cart cart = await getCart(db);
-        emit(CartLoaded(cart: cart));
+        Cart cart;
+        if (event.item is Hotel) {
+          Hotel item = event.item as Hotel;
+          cart = await cache.removeHotel(item.id);
+        } else if (event.item is Restaurant) {
+          Restaurant item = event.item as Restaurant;
+          cart = await cache.removeRestaurant(item.id);
+        } else {
+          Destination item = event.item as Destination;
+          cart = await cache.removeDestination(item.id);
+        }
+
+        Cart cartNew = await cache.getCart();
+        emit(CartLoaded(cart: cartNew));
       } catch (e) {
         emit(CartError(message: e.toString()));
       }
     });
-  }
-
-  Future<Cart> getCart(database) async {
-    Cart cart = Cart(hotels: [], restaurants: [], destinations: []);
-    cart.hotels = await SQLHelper.getHotels(database);
-    cart.restaurants = await SQLHelper.getRestaurants(database);
-    cart.destinations = await SQLHelper.getDestinations(database);
-    return cart;
   }
 }
