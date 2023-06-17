@@ -30,26 +30,24 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  # bloc for state management
   flutter_bloc: ^8.1.3
-  # go_router package
   go_router: ^2.0.0
-  # go http package
   http: ^0.13.3 
-  # equatable
   equatable: ^2.0.3
   flutter_dotenv: ^5.0.2
-  # flutter_rating_bar
   flutter_rating_bar: ^4.0.0
-  # google map for displaying map
-  google_maps_flutter: ^2.0.9
-  # sqflite for local storage
   sqflite: ^2.2.8+4
+  path: ^1.8.2
+  sqflite_common_ffi: ^2.2.5
+  sqflite_common_ffi_web: ^0.3.5+1
+  
+  # google map for displaying map
+  # google_maps_flutter: ^2.0.9
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  path: ^1.8.2
 
 dev_dependencies:
   flutter_test:

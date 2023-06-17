@@ -45,7 +45,7 @@ class HomePage extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(
-                          10.0), // Adjust the value as per your requirement
+                          10.0),
                       child: Image.asset(
                         'assets/images/Skateboard Astonaut Sticker.jfif', // Replace with your image URL
                         fit: BoxFit.cover,

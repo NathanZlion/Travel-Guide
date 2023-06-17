@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../../application/restaurant/restaurant.dart';
 
 class ApiDataProvider {
-  final String baseUrl = "http://localhost:5000/api";
+final String baseUrl = "http://10.0.2.2:5000/api";
 
   Future<List<Restaurant>> getRestaurants(name, location) async {
     final response = await http
@@ -12,7 +12,6 @@ class ApiDataProvider {
     if (response.statusCode >= 200 && response.statusCode < 300) {
       final json = jsonDecode(response.body)["data"];
 
-      // convert the json object to a list of restaurants
       final List<Restaurant> restaurants = [];
 
       for (var item in json) {

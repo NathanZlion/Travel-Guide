@@ -10,7 +10,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       try {
         final db = await SQLHelper.openDatabase();
         Cart cart = await getCart(db);
-        emit(CartLoaded(cartList: cart));
+        emit(CartLoaded(cart: cart));
       } catch (e) {
         emit(CartError(message: e.toString()));
       }
@@ -32,7 +32,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         final db = await SQLHelper.openDatabase();
         await SQLHelper.addItem(db, event.item);
         Cart cart = await getCart(db);
-        emit(CartLoaded(cartList: cart));
+        emit(CartLoaded(cart: cart));
       } catch (e) {
         emit(CartError(message: e.toString()));
       }
@@ -44,7 +44,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         final db = await SQLHelper.openDatabase();
         await SQLHelper.removeItem(db, event.item);
         Cart cart = await getCart(db);
-        emit(CartLoaded(cartList: cart));
+        emit(CartLoaded(cart: cart));
       } catch (e) {
         emit(CartError(message: e.toString()));
       }

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:go_router/go_router.dart';
-
 import '../../../application/destination/destination.dart';
+import '../../common/destination_card.dart';
 
 class DestinationsListPage extends StatefulWidget {
   const DestinationsListPage({Key? key}) : super(key: key);
@@ -87,9 +85,7 @@ class DestinationsListPageState extends State<DestinationsListPage> {
               child: BlocBuilder<DestinationBloc, DestinationState>(
                 builder: (context, state) {
                   if (state is DestinationInitial) {
-                    context
-                        .read<DestinationBloc>()
-                        .add(const DestinationListLoadEvent('', ''));
+                    context.read<DestinationBloc>().add(const DestinationListLoadEvent('', ''));
                     return const Center(child: Text(''));
                   } else if (state is DestinationListLoading) {
                     return const Center(child: CircularProgressIndicator());
@@ -117,81 +113,3 @@ class DestinationsListPageState extends State<DestinationsListPage> {
   }
 }
 
-class DestinationCard extends StatelessWidget {
-  const DestinationCard({
-    Key? key,
-    required this.destination,
-  }) : super(key: key);
-
-  final Destination destination;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 2.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: InkWell(
-        onTap: () {
-          context.push('/destination/${destination.id}');
-        },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(10.0),
-              ),
-              child: Image.network(
-                destination.image,
-                fit: BoxFit.cover,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                destination.name,
-                style: const TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Row(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Icon(Icons.location_on, size: 16.0),
-                ),
-                Text(destination.location),
-              ],
-            ),
-            Row(
-              children: [
-                Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: RatingBar.builder(
-                      initialRating: destination.rating,
-                      minRating: 0,
-                      direction: Axis.horizontal,
-                      allowHalfRating: true,
-                      itemCount: 5,
-                      itemSize: 20.0,
-                      itemBuilder: (context, _) => const Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      ),
-                      onRatingUpdate: (rating) {
-                        // do nothing
-                      },
-                    )),
-                Text(destination.rating.toString()),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}

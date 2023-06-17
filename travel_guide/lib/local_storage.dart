@@ -1,24 +1,30 @@
-import 'package:sqflite/sqflite.dart' as sql;
+// import 'package:sqflite/sqflite.dart' as sql;
+import 'package:sqflite_common_ffi/sqflite_ffi.dart' as sqflite_ffi;
 import 'package:path/path.dart' as path;
+import 'package:sqflite/sqflite.dart';
 
 import 'application/destination/model/destination_model.dart';
 import 'application/hotel/model/hotel_model.dart';
 import 'application/restaurant/model/restaurant_model.dart';
 
 class SQLHelper {
-  static Future<sql.Database> openDatabase() async {
-    final dbPath = await sql.getDatabasesPath();
+  static Future<Database> openDatabase() async {
+    try {
+      DatabaseFactory databaseFactory = sqflite_ffi.databaseFactoryFfi;
+      String databasePath = await getDatabasesPath();
+      String fullPath = path.join(databasePath, 'localCart.db');
 
-    return await sql.openDatabase(
-      path.join(dbPath, 'localCart.db'),
-      version: 1,
-      onCreate: (db, version) async {
-        await createTables(db);
-      },
-    );
+      Database database = await databaseFactory.openDatabase(fullPath);
+      await createTables(database);
+
+      return database;
+    } catch (e) {
+      print(e.toString());
+      throw Exception('Error opening database');
+    }
   }
 
-  static Future<void> createTables(sql.Database database) async {
+  static Future<void> createTables(Database database) async {
     // creating destination table
     await database.execute('''
     CREATE TABLE destinationCart (
@@ -44,13 +50,13 @@ class SQLHelper {
     ''');
   }
 
-  static Future<List<Hotel>> getHotels(sql.Database database) async {
+  static Future<List<Hotel>> getHotels(Database database) async {
     final List<Map<String, dynamic>> hotels =
         await _getAllData(database, 'hotelCart');
     return hotels.map((hotel) => Hotel.fromJson(hotel)).toList();
   }
 
-  static Future<List<Restaurant>> getRestaurants(sql.Database database) async {
+  static Future<List<Restaurant>> getRestaurants(Database database) async {
     final List<Map<String, dynamic>> restaurants =
         await _getAllData(database, 'restaurantCart');
     return restaurants
@@ -58,8 +64,7 @@ class SQLHelper {
         .toList();
   }
 
-  static Future<List<Destination>> getDestinations(
-      sql.Database database) async {
+  static Future<List<Destination>> getDestinations(Database database) async {
     final List<Map<String, dynamic>> destinations =
         await _getAllData(database, 'destinationCart');
     return destinations
@@ -68,11 +73,11 @@ class SQLHelper {
   }
 
   static Future<List<Map<String, dynamic>>> _getAllData(
-      sql.Database database, String table) async {
+      Database database, String table) async {
     return await database.query(table);
   }
 
-  static Future<void> addItem (sql.Database database, Object item) async {
+  static Future<void> addItem(Database database, Object item) async {
     // check the type of the item
     if (item is Hotel) {
       await _insertData(database, 'hotelCart', item.toMap());
@@ -84,12 +89,12 @@ class SQLHelper {
   }
 
   static Future<int> _insertData(
-      sql.Database database, String table, Map<String, dynamic> data) async {
+      Database database, String table, Map<String, dynamic> data) async {
     return await database.insert(table, data,
-        conflictAlgorithm: sql.ConflictAlgorithm.replace);
-
+        conflictAlgorithm: ConflictAlgorithm.replace);
   }
-  static Future<void> removeItem (sql.Database database, Object item) async {
+
+  static Future<void> removeItem(Database database, Object item) async {
     // check the type of the item
     if (item is Hotel) {
       await _deleteData(database, 'hotelCart', item.id);
@@ -101,12 +106,12 @@ class SQLHelper {
   }
 
   static Future<int> _deleteData(
-      sql.Database database, String table, String id) async {
+      Database database, String table, String id) async {
     return await database.delete(table, where: 'id = ?', whereArgs: [id]);
   }
 
   /// check if the item is in the cart.
-  static Future<bool> isInCart(sql.Database database, Object item) {
+  static Future<bool> isInCart(Database database, Object item) {
     if (item is Hotel) {
       return _isInCart(database, 'hotelCart', item.id);
     } else if (item is Restaurant) {
@@ -119,7 +124,7 @@ class SQLHelper {
   }
 
   static Future<bool> _isInCart(
-      sql.Database database, String table, String id) async {
+      Database database, String table, String id) async {
     final List<Map<String, dynamic>> data =
         await database.query(table, where: 'id = ?', whereArgs: [id]);
     return data.isNotEmpty;

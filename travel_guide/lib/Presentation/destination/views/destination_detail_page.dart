@@ -117,6 +117,8 @@ class DestinationDetailPage extends StatelessWidget {
                           onPressed: () {
                             // TODO: Implement add to cart functionality
                             // In fact, check if already in cart and conditionally have a remove from cart button
+
+                            
                           },
                           child: const Text('Add to Cart'),
                         ),

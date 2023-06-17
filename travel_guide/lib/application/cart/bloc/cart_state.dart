@@ -8,9 +8,9 @@ class CartInitial extends CartState {}
 class CartLoading extends CartState {}
 
 class CartLoaded extends CartState {
-  final Cart cartList;
+  final Cart cart;
 
-  CartLoaded({required this.cartList});
+  CartLoaded({required this.cart});
 }
 
 class CartError extends CartState {

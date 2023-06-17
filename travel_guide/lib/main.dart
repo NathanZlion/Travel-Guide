@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'Presentation/cart/cart_list.dart';
 import './Presentation/screens_barrel.dart';
 import 'application/cart/cart.dart';
 import 'application/destination/destination.dart';
@@ -9,7 +10,15 @@ import 'application/restaurant/restaurant.dart';
 import 'local_storage.dart';
 
 Future<void> main() async {
-  SQLHelper.openDatabase();
+  WidgetsFlutterBinding.ensureInitialized(); // Initialize Flutter binding
+
+  try {
+    await SQLHelper.openDatabase();
+  } catch (e) {
+    print("----------------------------");
+    print(e.toString());
+    print("----------------------------");
+  }
   runApp(MyApp());
 }
 
@@ -56,13 +65,13 @@ class MyApp extends StatelessWidget {
           state.params['id']!,
         ),
       ),
-      GoRoute(
-        path: '/About',
-        builder: (context, state) => const HomePage(),
-      ),
+      // GoRoute(
+      //   path: '/About',
+      //   builder: (context, state) => const HomePage(),
+      // ),
       GoRoute(
         path: '/cart',
-        builder: (context, state) => const HomePage(),
+        builder: (context, state) => const CartList(),
       ),
     ],
   );

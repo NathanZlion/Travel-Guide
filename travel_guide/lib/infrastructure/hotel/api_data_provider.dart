@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../../application/hotel/hotel.dart';
 
 class ApiDataProvider {
-  final String baseUrl = "http://localhost:5000/api";
+final String baseUrl = "http://10.0.2.2:5000/api";
 
   Future<List<Hotel>> getHotels(name, location) async {
     final response = await http
