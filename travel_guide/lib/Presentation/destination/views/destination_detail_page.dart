@@ -38,7 +38,9 @@ class DestinationDetailPage extends StatelessWidget {
                 ),
                 body: const LoadingScreen(),
               );
-            } else if (state is DestinationDetailLoaded) {
+            } 
+            // loaded successfully
+            else if (state is DestinationDetailLoaded) {
               final Destination destination = state.destination;
               return Scaffold(
                 appBar: AppBar(

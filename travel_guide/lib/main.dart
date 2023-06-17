@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import './Presentation/screens_barrel.dart';
+import 'application/cart/cart.dart';
 import 'application/destination/destination.dart';
 import 'application/hotel/hotel.dart';
 import 'application/restaurant/restaurant.dart';
@@ -74,6 +75,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => DestinationBloc()),
           BlocProvider(create: (context) => RestaurantBloc()),
           BlocProvider(create: (context) => HotelBloc()),
+          BlocProvider(create: (context) => CartBloc()),
         ],
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,

@@ -40,7 +40,7 @@ class Destination {
     required this.map,
   });
 
-  Destination.fromJson(Map<dynamic, dynamic> json) {
+  Destination.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
     name = json['name'];
     location = json['location'];
@@ -51,7 +51,7 @@ class Destination {
     map = json['map'];
   }
 
-  Map<dynamic, dynamic> toJson() {
+  Map<String, dynamic> toJson() {
     return {
       '_id': id,
       'name': name,
