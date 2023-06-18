@@ -24,11 +24,53 @@ class CartList extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Cart'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.delete, color: Colors.red),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      backgroundColor: Theme.of(context).secondaryHeaderColor,
+                      title: const Text(
+                        'Clear Cart',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      content: const Text(
+                        'Are you sure you want to clear the cart?',
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            context.read<CartBloc>().add(ClearCartEvent());
+                          },
+                          child: const Text(
+                            'Clear',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+          ],
         ),
         body: Container(
           padding: const EdgeInsets.all(8),
           child: BlocBuilder<CartBloc, CartState>(
-
             builder: (context, state) {
               if (state is CartInitial) {
                 context.read<CartBloc>().add(CartLoad());

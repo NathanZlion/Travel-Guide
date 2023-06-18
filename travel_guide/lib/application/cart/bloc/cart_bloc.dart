@@ -67,9 +67,11 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<ClearCartEvent>((event, emit) async {
       emit(CartLoading());
       try {
-        print("clearing cart");
         Cart cart = await cache.clearCart();
-        print(cart);
+        print("clear cart");
+        print(cart.destinations);
+        print(cart.hotels);
+        print(cart.restaurants);
         emit(CartLoaded(cart: cart));
       } catch (e) {
         emit(CartError(message: e.toString()));
