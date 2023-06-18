@@ -55,22 +55,26 @@ class Settings extends StatelessWidget {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                title: const Text('Clear Cart'),
+                                title: const Text('Clear Cart',
+                                    style: TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold)),
                                 content: const Text(
-                                    'Are you sure you want to clear the cart?'),
+                                  'Are you sure you want to clear the cart?',
+                                ),
                                 actions: [
                                   TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('Cancel'),
-                                  ),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('Cancel')),
                                   TextButton(
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                       CartBloc().add(ClearCartEvent());
                                     },
-                                    child: const Text('Clear'),
+                                    child: const Text('Clear',
+                                        style: TextStyle(color: Colors.red)),
                                   ),
                                 ],
                               );

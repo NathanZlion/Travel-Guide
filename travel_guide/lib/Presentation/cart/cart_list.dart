@@ -7,9 +7,9 @@ import 'package:travel_guide/application/restaurant/model/restaurant_model.dart'
 import '../../application/Theme/theme.dart';
 import '../../application/cart/cart.dart';
 import '../../application/destination/destination.dart';
-import '../common/destination_card.dart';
-import '../common/hotel_card.dart';
-import '../common/restaurant_card.dart';
+import '../common/destination_tile.dart';
+import '../common/hotel_tile.dart';
+import '../common/restaurant_tile.dart';
 import '../common/stylish_bottom_nav.dart';
 
 class CartList extends StatelessWidget {
@@ -28,6 +28,7 @@ class CartList extends StatelessWidget {
         body: Container(
           padding: const EdgeInsets.all(8),
           child: BlocBuilder<CartBloc, CartState>(
+
             builder: (context, state) {
               if (state is CartInitial) {
                 context.read<CartBloc>().add(CartLoad());
@@ -87,41 +88,46 @@ class DestinationsInCartListView extends StatelessWidget {
         const Text('Destinations', style: TextStyle(fontSize: 18)),
         const SizedBox(height: 8),
         Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: destinations.isNotEmpty
-                ? ListView.builder(
-                    shrinkWrap: true,
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: destinations.length,
-                    itemBuilder: (context, index) {
-                      final item = destinations[index];
-
-                      return Row(
-                        children: [
-                          Expanded(child: DestinationCard(destination: item)),
-                          IconButton(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: destinations.isNotEmpty
+              ? ListView.builder(
+                  shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: destinations.length,
+                  itemBuilder: (context, index) {
+                    final item = destinations[index];
+                    return Stack(
+                      children: [
+                        Expanded(child: DestinationTile(destination: item)),
+                        Positioned(
+                          top: 2,
+                          right: 2,
+                          child: IconButton(
                             onPressed: () {
                               context
                                   .read<CartBloc>()
                                   .add(CartRemove(item: item));
                             },
-                            icon: const Icon(Icons.remove_circle),
+                            icon: const Icon(
+                              Icons.delete,
+                            ),
                           ),
-                        ],
-                      );
+                        ),
+                      ],
+                    );
+                  },
+                )
+              : Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      GoRouter.of(context).push('/destinations');
                     },
-                  )
-                : Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        GoRouter.of(context).push('/destinations');
-                      },
-                      child:
-                          const Text('No Destinations in Cart, Explore some!'),
-                    ),
-                  )),
+                    child: const Text('No Destinations in Cart, Explore some!'),
+                  ),
+                ),
+        ),
       ],
     );
   }
@@ -144,21 +150,27 @@ class RestaurantsInCartListView extends StatelessWidget {
             child: restaurants.isNotEmpty
                 ? ListView.builder(
                     shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     itemCount: restaurants.length,
                     itemBuilder: (context, index) {
                       final item = restaurants[index];
 
-                      return Row(
+                      return Stack(
                         children: [
-                          Expanded(child: RestaurantCard(restaurant: item)),
-                          IconButton(
-                            onPressed: () {
-                              context
-                                  .read<CartBloc>()
-                                  .add(CartRemove(item: item));
-                            },
-                            icon: const Icon(Icons.remove_circle),
+                          Expanded(child: RestauranTile(restaurant: item)),
+                          Positioned(
+                            top: 2,
+                            right: 2,
+                            child: IconButton(
+                              onPressed: () {
+                                context
+                                    .read<CartBloc>()
+                                    .add(CartRemove(item: item));
+                              },
+                              icon: const Icon(
+                                Icons.delete,
+                              ),
+                            ),
                           ),
                         ],
                       );
@@ -195,21 +207,26 @@ class HotelsInCartListView extends StatelessWidget {
             child: hotels.isNotEmpty
                 ? ListView.builder(
                     shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     itemCount: hotels.length,
                     itemBuilder: (context, index) {
                       final item = hotels[index];
-
-                      return Row(
+                      return Stack(
                         children: [
-                          Expanded(child: HotelCard(hotel: item)),
-                          IconButton(
-                            onPressed: () {
-                              context
-                                  .read<CartBloc>()
-                                  .add(CartRemove(item: item));
-                            },
-                            icon: const Icon(Icons.remove_circle),
+                          Expanded(child: HotelTile(hotel: item)),
+                          Positioned(
+                            top: 2,
+                            right: 2,
+                            child: IconButton(
+                              onPressed: () {
+                                context
+                                    .read<CartBloc>()
+                                    .add(CartRemove(item: item));
+                              },
+                              icon: const Icon(
+                                Icons.delete,
+                              ),
+                            ),
                           ),
                         ],
                       );
