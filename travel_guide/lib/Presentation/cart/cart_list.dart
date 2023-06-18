@@ -4,18 +4,24 @@ import 'package:go_router/go_router.dart';
 import 'package:travel_guide/application/hotel/hotel.dart';
 import 'package:travel_guide/application/restaurant/model/restaurant_model.dart';
 
+import '../../application/Theme/theme.dart';
 import '../../application/cart/cart.dart';
 import '../../application/destination/destination.dart';
 import '../common/destination_card.dart';
 import '../common/hotel_card.dart';
 import '../common/restaurant_card.dart';
+import '../common/stylish_bottom_nav.dart';
 
 class CartList extends StatelessWidget {
   const CartList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return MaterialApp(
+      title: 'Cart',
+      debugShowCheckedModeBanner: false,
+      theme: context.watch<ThemeBloc>().state.theme,
+      home: Scaffold(
         appBar: AppBar(
           title: const Text('Cart'),
         ),
@@ -48,9 +54,9 @@ class CartList extends StatelessWidget {
                     children: [
                       RestaurantsInCartListView(
                           restaurants: state.cart.restaurants),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 28),
                       HotelsInCartListView(hotels: state.cart.hotels),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 28),
                       DestinationsInCartListView(
                           destinations: state.cart.destinations),
                     ],
@@ -63,7 +69,10 @@ class CartList extends StatelessWidget {
               );
             },
           ),
-        ));
+        ),
+        bottomNavigationBar: StylishBottomNavigation(selectedIndex: 1),
+      ),
+    );
   }
 }
 
@@ -80,7 +89,6 @@ class DestinationsInCartListView extends StatelessWidget {
         Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: Colors.grey[200],
             ),
             child: destinations.isNotEmpty
                 ? ListView.builder(
@@ -132,7 +140,6 @@ class RestaurantsInCartListView extends StatelessWidget {
         Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: Colors.grey[200],
             ),
             child: restaurants.isNotEmpty
                 ? ListView.builder(
@@ -184,7 +191,6 @@ class HotelsInCartListView extends StatelessWidget {
         Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: Colors.grey[200],
             ),
             child: hotels.isNotEmpty
                 ? ListView.builder(
@@ -221,4 +227,3 @@ class HotelsInCartListView extends StatelessWidget {
     );
   }
 }
-

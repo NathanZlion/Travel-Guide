@@ -117,7 +117,7 @@ class HotelDetailPage extends StatelessWidget {
                               bool itemInCart = state.cart.hotels.any((item) => item.id == hotel.id);
                               if (itemInCart) {
                                 return const Text('Remove item from cart',
-                                    style: TextStyle(fontSize: 16.0, backgroundColor: Colors.red, color: Colors.white));
+                                    style: TextStyle(fontSize: 16.0, color: Colors.white));
                               } else {
                                 return const Text('Add item to cart',
                                     style: TextStyle(fontSize: 16.0, backgroundColor: Colors.blue, color: Colors.white));

@@ -131,9 +131,7 @@ class RestaurantDetailPage extends StatelessWidget {
                               if (itemInCart) {
                                 return const Text('Remove item from cart',
                                     style: TextStyle(
-                                        fontSize: 16.0,
-                                        backgroundColor: Colors.red,
-                                        color: Colors.white));
+                                        fontSize: 16.0, color: Colors.white));
                               } else {
                                 return const Text('Add item to cart',
                                     style: TextStyle(

@@ -40,7 +40,7 @@ dependencies:
   path: ^1.8.2
   sqflite_common_ffi: ^2.2.5
   sqflite_common_ffi_web: ^0.3.5+1
-  
+  shared_preferences: ^2.0.8
   # google map for displaying map
   # google_maps_flutter: ^2.0.9
 

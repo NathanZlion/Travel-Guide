@@ -42,6 +42,7 @@ class DestinationCard extends StatelessWidget {
                 destination.name,
                 style: const TextStyle(
                   fontSize: 18.0,
+                  overflow: TextOverflow.ellipsis,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -52,7 +53,11 @@ class DestinationCard extends StatelessWidget {
                   padding: EdgeInsets.all(8.0),
                   child: Icon(Icons.location_on, size: 16.0),
                 ),
-                Text(destination.location),
+                Text(
+                  destination.location,
+                  style: const TextStyle(fontSize: 12.0),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ],
             ),
             Row(

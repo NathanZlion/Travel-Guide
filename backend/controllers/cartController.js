@@ -112,3 +112,19 @@ export const getCart = async (req, res) => {
         res.status(500).json({ message: 'Failed to get cart' });
     }
 }
+
+
+// clear cart
+export const clearCart = async (req, res) => {
+    try {
+        const cart = await Cart.findOneAndUpdate(
+            {},
+            { $set: { hotels: [], destinations: [], restaurants: [] } },
+            { new: true }
+        ).populate('hotels').populate('destinations').populate('restaurants');
+
+        res.status(200).json({ data: cart });
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to clear cart' });
+    }
+}

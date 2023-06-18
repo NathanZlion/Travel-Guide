@@ -3,17 +3,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'Presentation/cart/cart_list.dart';
 import './Presentation/screens_barrel.dart';
+import 'Presentation/common/settings.dart';
 import 'application/cart/cart.dart';
 import 'application/destination/destination.dart';
 import 'application/hotel/hotel.dart';
+import 'application/Theme/theme.dart';
 import 'application/restaurant/restaurant.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'serviceLocator.dart';
 
 // import 'local_storage.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Initialize Flutter binding
-
+  WidgetsFlutterBinding.ensureInitialized();
+  final SharedPreferences preferences = await SharedPreferences.getInstance();
+  ServiceLocator().registerPreferences(preferences);
   await dotenv.load();
   runApp(MyApp());
 }
@@ -61,10 +66,10 @@ class MyApp extends StatelessWidget {
           state.params['id']!,
         ),
       ),
-      // GoRoute(
-      //   path: '/About',
-      //   builder: (context, state) => const HomePage(),
-      // ),
+      GoRoute(
+        path: '/Settings',
+        builder: (context, state) => const Settings(),
+      ),
       GoRoute(
         path: '/cart',
         builder: (context, state) => const CartList(),
@@ -75,19 +80,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-        // bloc providers for the app.
         providers: [
           BlocProvider(create: (context) => DestinationBloc()),
           BlocProvider(create: (context) => RestaurantBloc()),
           BlocProvider(create: (context) => HotelBloc()),
           BlocProvider(create: (context) => CartBloc()),
+          BlocProvider(create: (context) => ThemeBloc()),
         ],
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,
           title: 'Travel Guide',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
           routerDelegate: _router.routerDelegate,
           routeInformationParser: _router.routeInformationParser,
         ));

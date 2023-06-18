@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../application/Theme/theme.dart';
 import '../../../application/hotel/hotel.dart';
 import '../../common/hotel_card.dart';
 
@@ -31,84 +32,92 @@ class HotelsListPageState extends State<HotelsListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Hotels List'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: 'Hotel Name',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 8.0),
-            TextField(
-              controller: _locationController,
-              decoration: const InputDecoration(
-                labelText: 'Location',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 8.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    final String name = _nameController.text;
-                    final String location = _locationController.text;
-                    context.read<HotelBloc>().add(
-                          HotelListLoadEvent(location, name),
-                        );
-                  },
-                  child: const Text('Search'),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: context.watch<ThemeBloc>().state.theme,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Hotels List'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              TextField(
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  labelText: 'Hotel Name',
+                  border: OutlineInputBorder(),
                 ),
-                const SizedBox(width: 8.0),
-                ElevatedButton(
-                  onPressed: () {
-                    _nameController.clear();
-                    _locationController.clear();
-                    context.read<HotelBloc>().add(
-                          const HotelListLoadEvent('', ''),
-                        );
-                  },
-                  child: const Text('Reset'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8.0),
-            Expanded(
-              child: BlocBuilder<HotelBloc, HotelState>(
-                builder: (context, state) {
-                  if (state is HotelInitial) {
-                    context
-                        .read<HotelBloc>()
-                        .add(const HotelListLoadEvent('', ''));
-                  } else if (state is HotelListLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (state is HotelListError) {
-                    return Center(child: Text('Error: ${state.message}'));
-                  } else if (state is HotelListEmpty) {
-                    return const Center(child: Text('No hotels found'));
-                  } else if (state is HotelListLoaded) {
-                    return ListView.builder(
-                      itemCount: state.hotels.length,
-                      itemBuilder: (context, index) {
-                        final hotel = state.hotels[index];
-                        return HotelCard(hotel: hotel);
-                      },
-                    );
-                  }
-                  return Container();
-                },
               ),
-            ),
-          ],
+              const SizedBox(height: 8.0),
+              TextField(
+                controller: _locationController,
+                decoration: const InputDecoration(
+                  labelText: 'Location',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 8.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      final String name = _nameController.text;
+                      final String location = _locationController.text;
+                      context.read<HotelBloc>().add(
+                            HotelListLoadEvent(location, name),
+                          );
+                    },
+                    child: const Text('Search'),
+                  ),
+                  const SizedBox(width: 8.0),
+                  ElevatedButton(
+                    onPressed: () {
+                      _nameController.clear();
+                      _locationController.clear();
+                      context.read<HotelBloc>().add(
+                            const HotelListLoadEvent('', ''),
+                          );
+                    },
+                    child: const Text('Reset'),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8.0),
+              Expanded(
+                child: BlocBuilder<HotelBloc, HotelState>(
+                  builder: (context, state) {
+                    if (state is HotelInitial) {
+                      context
+                          .read<HotelBloc>()
+                          .add(const HotelListLoadEvent('', ''));
+                    } else if (state is HotelListLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state is HotelListError) {
+                      return Center(child: Text('Error: ${state.message}'));
+                    } else if (state is HotelListEmpty) {
+                      return const Center(child: Text('No hotels found'));
+                    } else if (state is HotelListLoaded) {
+                      return ListView.builder(
+                        itemCount: state.hotels.length,
+                        itemBuilder: (context, index) {
+                          final hotel = state.hotels[index];
+                          return HotelCard(hotel: hotel);
+                        },
+                      );
+                    }
+                    return Container();
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

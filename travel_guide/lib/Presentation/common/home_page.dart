@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:travel_guide/Presentation/common/stylish_bottom_nav.dart';
+
+import '../../application/Theme/bloc/theme_bloc.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -12,30 +16,16 @@ class HomePage extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: context.watch<ThemeBloc>().state.theme,
       home: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          title: const Text("Travel Guide",
-              style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue)),
-          actions: [
-            IconButton(
-              color: Colors.black,
-              onPressed: () {
-                routeTo("cart");
-              },
-              icon: const Icon(Icons.card_travel),
+          title: const Text(
+            "Travel Guide",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
             ),
-            IconButton(
-              color: Colors.black,
-              onPressed: () {
-                routeTo("settings");
-              },
-              icon: const Icon(Icons.settings),
-            ),
-          ],
+          ),
         ),
         body: SizedBox(
           child: Padding(
@@ -44,24 +34,16 @@ class HomePage extends StatelessWidget {
                 child: Column(
                   children: [
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(
-                          10.0),
+                      borderRadius: BorderRadius.circular(10.0),
                       child: Image.asset(
                         'assets/images/Skateboard Astonaut Sticker.jfif', // Replace with your image URL
                         fit: BoxFit.cover,
                       ),
                     ),
-                    // SizedBox(
-                    //     height: 400,
-                    //     child: Image.asset(
-                    //         "assets/images/Skateboard Astonaut Sticker.jfif")),
                     Container(height: 30),
                     SizedBox(
-                      height: 500,
-                      child: GridView(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2),
+                      height: 350,
+                      child: ListView(
                         children: [
                           ListTile(
                             leading: const Icon(Icons.hotel),
@@ -73,6 +55,7 @@ class HomePage extends StatelessWidget {
                             onTap: () => routeTo("hotels"),
                             focusColor: Colors.blue,
                           ),
+                          Container(height: 40),
                           ListTile(
                             leading: const Icon(Icons.restaurant),
                             title: const Text("Restaurants",
@@ -83,6 +66,7 @@ class HomePage extends StatelessWidget {
                             onTap: () => routeTo("restaurants"),
                             focusColor: Colors.blue,
                           ),
+                          Container(height: 40),
                           ListTile(
                             leading: const Icon(Icons.hotel),
                             title: const Text("Destinations",
@@ -93,17 +77,18 @@ class HomePage extends StatelessWidget {
                             onTap: () => routeTo("destinations"),
                             focusColor: Colors.blue,
                           ),
-                          // Container(height: 10),
-                          // const Divider(),
-                          // Container(height: 10),
                         ],
                       ),
                     ),
                   ],
                 ),
-              )),
+              ),
+            ),
         ),
+        bottomNavigationBar: StylishBottomNavigation(selectedIndex: 0),
       ),
     );
   }
 }
+
+

@@ -1,11 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../application/restaurant/restaurant.dart';
-
-
 
 class RestaurantCard extends StatelessWidget {
   final Restaurant restaurant;
@@ -53,7 +50,11 @@ class RestaurantCard extends StatelessWidget {
                   padding: EdgeInsets.all(8.0),
                   child: Icon(Icons.location_on, size: 16.0),
                 ),
-                Text(restaurant.location),
+                Text(
+                  restaurant.location,
+                  style: const TextStyle(fontSize: 12.0),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ],
             ),
             Row(

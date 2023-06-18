@@ -155,7 +155,6 @@ class DestinationDetailPage extends StatelessWidget {
                                 return const Text('Remove item from cart',
                                     style: TextStyle(
                                         fontSize: 16.0,
-                                        backgroundColor: Colors.red,
                                         color: Colors.white));
                               } else {
                                 return const Text('Add item to cart',

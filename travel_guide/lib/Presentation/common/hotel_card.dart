@@ -45,6 +45,7 @@ class HotelCard extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),
@@ -55,9 +56,7 @@ class HotelCard extends StatelessWidget {
                   const Icon(Icons.location_on, color: Colors.grey, size: 16.0),
                   Text(
                     hotel.location,
-                    style: const TextStyle(
-                      fontSize: 14.0,
-                    ),
+                    style: const TextStyle(fontSize: 14.0),
                   ),
                 ],
               ),
@@ -67,8 +66,7 @@ class HotelCard extends StatelessWidget {
               child: Text(
                 hotel.description,
                 style: const TextStyle(
-                  fontSize: 14.0,
-                ),
+                    overflow: TextOverflow.ellipsis, fontSize: 14.0),
               ),
             ),
           ],

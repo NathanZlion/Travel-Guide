@@ -122,6 +122,20 @@ class CartCache {
     }
   }
 
+
+  // clearCart
+  Future<Cart> clearCart() async {
+    final response = await http.delete(Uri.parse("$baseUrl/cart"));
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      final json = jsonDecode(response.body)["data"];
+
+      return Cart.fromJson(json);
+    } else {
+      throw Exception("Error clearing cart");
+    }
+  }
+
   static Future<bool> checkItemInCart(item) async {
     Cart cart = await CartCache().getCart();
 
